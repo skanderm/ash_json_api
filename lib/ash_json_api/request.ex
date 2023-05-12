@@ -264,6 +264,7 @@ defmodule AshJsonApi.Request do
   defp valid_header_params?(params) do
     params
     |> Map.keys()
+    |> Enum.reject(& &1 == "charset")
     |> Enum.sort()
     |> case do
       [] ->
