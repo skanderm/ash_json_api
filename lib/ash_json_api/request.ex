@@ -262,24 +262,31 @@ defmodule AshJsonApi.Request do
   end
 
   defp valid_header_params?(params) do
-    params
-    |> Map.keys()
-    |> Enum.sort()
+    Application.get_env(:ash_json_api, :strict_header_params?, true)
     |> case do
-      [] ->
-        true
+      true ->
+        params
+        |> Map.keys()
+        |> Enum.sort()
+        |> case do
+          [] ->
+            true
 
-      ["ext"] ->
-        true
+          ["ext"] ->
+            true
 
-      ["profile"] ->
-        true
+          ["profile"] ->
+            true
 
-      ["ext", "profile"] ->
-        true
+          ["ext", "profile"] ->
+            true
 
-      _ ->
-        false
+          _ ->
+            false
+        end
+
+      false ->
+        true
     end
   end
 
